@@ -1,0 +1,72 @@
+/home/honzamac/SSU/venv/bin/python /home/honzamac/SSU/1_OCR/task01.py
+Train data loaded
+Test data loaded
+Testing weights with biases
+Success rate of 0: 80
+Success rate of 1: 249
+Success rate of 2: 363
+Success rate of 3: 511
+Success rate of 4: 591
+Success rate of 5: 659
+Success rate of 6: 722
+Success rate of 7: 745
+Success rate of 8: 809
+Success rate of 9: 845
+Success rate of 10: 879
+Success rate of 11: 847
+Success rate of 12: 867
+Success rate of 13: 900
+Success rate of 14: 893
+Success rate of 15: 908
+Success rate of 16: 950
+Success rate of 17: 923
+Success rate of 18: 926
+Success rate of 19: 938
+Success rate of 20: 930
+Success rate of 21: 949
+Success rate of 22: 935
+Success rate of 23: 949
+Success rate of 24: 956
+Success rate of 25: 967
+Success rate of 26: 964
+Success rate of 27: 966
+Success rate of 28: 979
+Success rate of 29: 972
+Success rate of 30: 966
+Success rate of 31: 975
+Success rate of 32: 988
+Success rate of 33: 994
+Success rate of 34: 995
+Success rate of 35: 990
+Success rate of 36: 987
+Success rate of 37: 995
+Success rate of 38: 978
+Success rate of 39: 990
+Success rate of 40: 990
+Success rate of 41: 994
+Success rate of 42: 988
+Success rate of 43: 992
+Success rate of 44: 993
+Success rate of 45: 993
+Success rate of 46: 989
+Success rate of 47: 975
+Success rate of 48: 979
+Success rate of 49: 989
+Success rate of 50: 979
+Success rate of 51: 987
+Success rate of 52: 990
+Success rate of 53: 985
+Success rate of 54: 992
+Success rate of 55: 997
+Success rate of 56: 1000
+N of iterations for success rate 1000: 57
+[0.71698113 0.74509804 0.82407407 0.93913043 0.82075472 0.55384615
+ 0.58928571 0.67567568 0.81081081 0.75471698 0.48       0.61682243
+ 0.93877551 0.77083333 0.79699248 0.74193548 0.56818182 0.86086957
+ 0.64912281 0.63809524 0.76576577 0.64444444 0.88888889 0.85714286
+ 0.7079646  0.8       ]
+Letter accuracy is: 0.7367772676123536
+Word accuracy is: 0.332
+Number of non zero elements in weights is 206855 / 214682
+
+Process finished with exit code 0
