@@ -1,0 +1,4 @@
+# for git to ignore all these files and dirs:
+*.npy
+*.zip
+ocr_names_images

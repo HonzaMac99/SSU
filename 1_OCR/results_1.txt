@@ -1,0 +1,73 @@
+C:\Users\Majitel\SSU\venv\Scripts\python.exe C:\Users\Majitel\SSU\task01.py
+Train data loaded
+Test data loaded
+Success rate: 96
+Success rate: 261
+Success rate: 376
+Success rate: 489
+Success rate: 577
+Success rate: 659
+Success rate: 738
+Success rate: 770
+Success rate: 820
+Success rate: 813
+Success rate: 840
+Success rate: 844
+Success rate: 879
+Success rate: 908
+Success rate: 905
+Success rate: 919
+Success rate: 899
+Success rate: 916
+Success rate: 936
+Success rate: 935
+Success rate: 937
+Success rate: 957
+Success rate: 970
+Success rate: 961
+Success rate: 959
+Success rate: 964
+Success rate: 961
+Success rate: 966
+Success rate: 967
+Success rate: 972
+Success rate: 988
+Success rate: 998
+Success rate: 998
+Success rate: 998
+Success rate: 992
+Success rate: 977
+Success rate: 975
+Success rate: 980
+Success rate: 985
+Success rate: 981
+Success rate: 984
+Success rate: 988
+Success rate: 993
+Success rate: 992
+Success rate: 998
+Success rate: 992
+Success rate: 997
+Success rate: 994
+Success rate: 984
+Success rate: 988
+Success rate: 999
+Success rate: 994
+Success rate: 989
+Success rate: 988
+Success rate: 992
+Success rate: 986
+Success rate: 996
+Success rate: 995
+Success rate: 1000
+N of iterations for success rate 1000: 59
+[0.60377358 0.7254902  0.82407407 0.89565217 0.80188679 0.55384615
+ 0.48214286 0.67567568 0.71171171 0.88679245 0.4        0.69158879
+ 0.91836735 0.72916667 0.84210526 0.74193548 0.90909091 0.82608696
+ 0.66666667 0.62857143 0.78378378 0.62222222 0.86666667 0.85714286
+ 0.62831858 0.78181818]
+Letter accuracy is: 0.7328683644179581
+Word accuracy is: 0.296
+Number of non zero elements in weights is 207662 / 214682
+
+Process finished with exit code 0

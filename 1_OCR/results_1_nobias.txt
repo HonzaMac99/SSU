@@ -1,0 +1,41 @@
+C:\Users\Majitel\SSU\venv\Scripts\python.exe C:\Users\Majitel\SSU\task01.py
+Train data loaded
+Test data loaded
+Success rate of 0: 107
+Success rate of 1: 388
+Success rate of 2: 588
+Success rate of 3: 728
+Success rate of 4: 792
+Success rate of 5: 834
+Success rate of 6: 860
+Success rate of 7: 902
+Success rate of 8: 939
+Success rate of 9: 959
+Success rate of 10: 955
+Success rate of 11: 949
+Success rate of 12: 951
+Success rate of 13: 952
+Success rate of 14: 959
+Success rate of 15: 968
+Success rate of 16: 966
+Success rate of 17: 985
+Success rate of 18: 990
+Success rate of 19: 990
+Success rate of 20: 996
+Success rate of 21: 994
+Success rate of 22: 996
+Success rate of 23: 993
+Success rate of 24: 996
+Success rate of 25: 998
+Success rate of 26: 1000
+N of iterations for success rate 1000: 27
+[0.67924528 0.64705882 0.76851852 0.80869565 0.81132075 0.46153846
+ 0.55357143 0.76576577 0.73873874 0.79245283 0.52       0.68224299
+ 0.87755102 0.71875    0.84210526 0.66129032 0.63636364 0.75652174
+ 0.61403509 0.73333333 0.72972973 0.71111111 0.91111111 0.7755102
+ 0.72566372 0.65454545]
+Letter accuracy is: 0.7144911914423684
+Word accuracy is: 0.26
+Number of non zero elements in weights is 199639 / 214656
+
+Process finished with exit code 0
