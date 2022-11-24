@@ -217,10 +217,10 @@ def train_weights(train_X, train_Y):
 
     # weights = [w_1, w_2 ... w_26]
     if MCC_BIAS:
-        print("Testing weights with biases")
+        print("Training weights with biases")
         weights = np.zeros((ALPHABET_LEN*(XI_LEN+1), 1))  # with biases
     else:
-        print("Testing weights without biases")
+        print("Training weights without biases")
         weights = np.zeros((ALPHABET_LEN*XI_LEN, 1))
 
     n_correct_words = 0
