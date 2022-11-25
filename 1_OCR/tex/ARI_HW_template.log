@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.2.21)  24 NOV 2022 22:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.2.21)  24 NOV 2022 23:45
 entering extended mode
 **./ARI_HW_template.tex
 (ARI_HW_template.tex
@@ -964,89 +964,43 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 68.
 (C:\Users\Majitel\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 7
-7.
-
-(C:\Users\Majitel\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
-File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 8
-8.
-
-(C:\Users\Majitel\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 96.
+(Font)              <10> on input line 80.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 96.
+(Font)              <7> on input line 80.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 96.
-Package epstopdf Info: Source file: <Figs/StepResponseEPS.eps>
-(epstopdf)                    date: 2014-02-03 15:08:08
-(epstopdf)                    size: 10257 bytes
-(epstopdf)             Output file: <Figs/StepResponseEPS-eps-converted-to.pdf>
+(Font)              <5> on input line 80.
 
-(epstopdf)                    date: 2021-02-22 14:04:45
-(epstopdf)                    size: 7338 bytes
-(epstopdf)             Command: <epstopdf --outfile=Figs/StepResponseEPS-eps-co
-nverted-to.pdf Figs/StepResponseEPS.eps>
-(epstopdf)             \includegraphics on input line 109.
-Package epstopdf Info: Output file is already uptodate.
-
-
-pdfTeX warning: pdflatex (file ./Figs/StepResponseEPS-eps-converted-to.pdf): PD
-F inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<Figs/StepResponseEPS-eps-converted-to.pdf, id=58, 329.23pt x 247.92625pt>
-File: Figs/StepResponseEPS-eps-converted-to.pdf Graphic file (type pdf)
-<use Figs/StepResponseEPS-eps-converted-to.pdf>
-Package pdftex.def Info: Figs/StepResponseEPS-eps-converted-to.pdf  used on inp
-ut line 109.
-(pdftex.def)             Requested size: 217.66211pt x 163.91177pt.
-<Figs/StepResponseJPG.jpg, id=59, 439.6425pt x 330.23375pt>
-File: Figs/StepResponseJPG.jpg Graphic file (type jpg)
-<use Figs/StepResponseJPG.jpg>
-Package pdftex.def Info: Figs/StepResponseJPG.jpg  used on input line 116.
-(pdftex.def)             Requested size: 217.66211pt x 163.49391pt.
 [1
 
-{C:/Users/Majitel/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./Figs/StepRe
-sponseEPS-eps-converted-to.pdf> <./Figs/StepResponseJPG.jpg>]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 165.
- [2]
+{C:/Users/Majitel/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
 (ARI_HW_template.aux)
 Package rerunfilecheck Info: File `ARI_HW_template.out' has not changed.
-(rerunfilecheck)             Checksum: 0059FD2F95E8485126C9E8F3214281BE;785.
+(rerunfilecheck)             Checksum: D61E197175C0AE673FEAE6D2CF646D26;301.
  ) 
 Here is how much of TeX's memory you used:
- 23903 strings out of 479618
- 436344 string characters out of 2864076
- 716029 words of memory out of 3000000
- 40587 multiletter control sequences out of 15000+200000
- 463916 words of font info for 71 fonts, out of 3000000 for 9000
+ 23656 strings out of 479618
+ 431407 string characters out of 2864076
+ 711366 words of memory out of 3000000
+ 40381 multiletter control sequences out of 15000+200000
+ 442722 words of font info for 63 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,11n,102p,460b,851s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}
-{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C
-:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}
-{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}<
-C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb
-><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.p
-fb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.
-pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10
-.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr1
-2.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr
-17.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
-r7.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
-r8.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
-r9.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
-ri10.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/
-lmri7.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm
-/lmtt10.pfb>
-Output written on ARI_HW_template.pdf (2 pages, 273495 bytes).
+ 102i,10n,102p,460b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.
+enc}{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.en
+c}{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.
+enc}{C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.en
+c}<C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.
+pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi1
+0.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmm
+i7.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lm
+r10.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/l
+mr12.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/
+lmr17.pfb><C:/Users/Majitel/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm
+/lmsy10.pfb>
+Output written on ARI_HW_template.pdf (1 page, 127190 bytes).
 PDF statistics:
- 154 PDF objects out of 1000 (max. 8388607)
- 18 named destinations out of 1000 (max. 500000)
- 175 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 80 PDF objects out of 1000 (max. 8388607)
+ 6 named destinations out of 1000 (max. 500000)
+ 117 words of extra memory for PDF output out of 10000 (max. 10000000)
 
