@@ -1,0 +1,28 @@
+C:\Users\Majitel\SSU\venv\Scripts\python.exe C:\Users\Majitel\SSU\1_OCR\SSU_task1.py
+Data loaded: ocr_names_images/trn
+Data loaded: ocr_names_images/tst
+Success rate of 0: 463
+Success rate of 1: 756
+Success rate of 2: 865
+Success rate of 3: 903
+Success rate of 4: 923
+Success rate of 5: 941
+Success rate of 6: 962
+Success rate of 7: 971
+Success rate of 8: 969
+Success rate of 9: 980
+Success rate of 10: 990
+Success rate of 11: 989
+Success rate of 12: 993
+Success rate of 13: 990
+Success rate of 14: 959
+Success rate of 15: 987
+Success rate of 16: 986
+Success rate of 17: 996
+Success rate of 18: 998
+Success rate of 19: 1000
+N of iterations for success rate 1000: 20
+R_char is: 0.054296506137865914
+R_seq is: 0.112
+
+Process finished with exit code 0
