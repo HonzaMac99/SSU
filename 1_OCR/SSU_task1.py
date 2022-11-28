@@ -2,36 +2,24 @@ import numpy as np
 from PIL import Image
 from os import listdir
 from os.path import isfile, join
-import sys
-import matplotlib.pyplot as plt
-from tqdm import tqdm
+# from tqdm import tqdm
 
-alphabet = {0: "a",
-            1: "b",
-            2: "c",
-            3: "d",
-            4: "e",
-            5: "f",
-            6: "g",
-            7: "h",
-            8: "i",
-            9: "j",
-            10: "k",
-            11: "l",
-            12: "m",
-            13: "n",
-            14: "o",
-            15: "p",
-            16: "q",
-            17: "r",
-            18: "s",
-            19: "t",
-            20: "u",
-            21: "v",
-            22: "w",
-            23: "x",
-            24: "y",
-            25: "z"}
+ALPHABET_LEN = 26
+XI_LEN = 8256  # n pixels + all pixel pairs
+BIAS = 1  # multi class classifier bias
+
+alphabet = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j", 10: "k",
+            11: "l", 12: "m", 13: "n", 14: "o", 15: "p", 16: "q", 17: "r", 18: "s", 19: "t", 20: "u",
+            21: "v", 22: "w", 23: "x", 24: "y", 25: "z"}
+
+
+def get_keys_from_value(my_dict, val):
+    for key, val_i in my_dict.items():
+        if val_i == val:
+            return key
+    print("Error, no key found!")
+    return None
+
 
 # all 20 classified sequences with lengths equal to the index
 sequences = [[],
@@ -43,10 +31,6 @@ sequences = [[],
              ["dwight", "joseph", "philip"],
              [],
              ["clifford"]]
-
-ALPHABET_LEN = len(alphabet)  # 26
-XI_LEN = 8256  # n pixels + all pixel pairs
-MCC_BIAS = 1  # multi class classifier bias
 
 
 # load a single image
@@ -98,7 +82,13 @@ def load_images(img_folder):
             Y.append(Y_i)
             img.append(img_i)
 
+    print("Data loaded:", img_folder)
     return X, Y, img
+
+trn_X, trn_Y, trn_img = load_images('ocr_names_images/trn')
+test_X, test_Y, test_img = load_images('ocr_names_images/tst')
+
+# ---------------------------------------------------------------------------------------------------------
 
 
 # returns na array P = [0 ... 0, x_i, 0 ... 0]
@@ -120,143 +110,48 @@ def phi_b(x_i, y_idx):
     return phi_xy
 
 
-def get_keys_from_value(my_dict, val):
-    for key, val_i in my_dict.items():
-        if val_i == val:
-            return key
-    print("Error, no key found!")
-    return None
-
-
-# multi class classifier prediction for one letter
-def mcc_predictor(w, x_i):
+# get prediction values for one letter from features x_i
+def letter_predictor(w, x_i):
     predictions_list = np.zeros(ALPHABET_LEN)
-    y_idx = -1
-    y_max = -10
     for i in range(ALPHABET_LEN):
-        if MCC_BIAS:
-            y_pred = (w.T @ phi_b(x_i, i))[0][0]
-        else:
-            y_pred = (w.T @ phi(x_i, i))[0][0]
-
+        y_pred = (w.T @ phi_b(x_i, i))[0][0] if BIAS else (w.T @ phi(x_i, i))[0][0]
         predictions_list[i] = y_pred
-        if y_pred > y_max:
-            y_max = y_pred
-            y_idx = i
-
-    return y_idx
+    return predictions_list
 
 
-def lsc1_predictor(w, x_i):
-    predictions_list = np.zeros(ALPHABET_LEN)
-    y_idx = -1
-    y_max = -10
-    for i in range(ALPHABET_LEN):
-        if MCC_BIAS:
-            y_pred = (w.T @ phi_b(x_i, i))[0][0]
-        else:
-            y_pred = (w.T @ phi(x_i, i))[0][0]
+# prediction of the sequence (Y_pred) from image sequence(X) and weights (w) with weights update
+# for each letter independently
+def multi_class_classifier(Y_ref, w, X, train=True):
+    word_error = 0
+    word_len = len(Y_ref)
+    Y_pred_idx = np.zeros(len(Y_ref), dtype=int)
+    for j in range(word_len):
+        x_j = np.vstack(X[:, j])
+        predictions_list = letter_predictor(w, x_j)
+        Y_pred_idx[j] = np.argmax(predictions_list)
 
-        predictions_list[i] = y_pred
-        if y_pred > y_max:
-            y_max = y_pred
-            y_idx = i
+    Y_ref_idx = np.zeros(word_len, dtype=int)
+    for i in range(word_len):
+        Y_ref_idx[i] = get_keys_from_value(alphabet, Y_ref[i])
 
-    return y_idx
+    for j in range(word_len):
+        if Y_pred_idx[j] != Y_ref_idx[j]:
+            if train:
+                x_i = np.vstack(X[:, j])
+                w += phi_b(x_i, Y_ref_idx[j]) if BIAS else phi(x_i, Y_ref_idx[j])
+                w -= phi_b(x_i, Y_pred_idx[j]) if BIAS else phi(x_i, Y_pred_idx[j])
+            word_error += 1
 
-
-def lsc2_predictor(w, x_i):
-    predictions_list = np.zeros(ALPHABET_LEN)
-    y_idx = -1
-    y_max = -10
-    for i in range(ALPHABET_LEN):
-        if MCC_BIAS:
-            y_pred = (w.T @ phi_b(x_i, i))[0][0]
-        else:
-            y_pred = (w.T @ phi(x_i, i))[0][0]
-
-        predictions_list[i] = y_pred
-        if y_pred > y_max:
-            y_max = y_pred
-            y_idx = i
-
-    return y_idx
-
-
-# prediction of the letter (y_pred)
-def multi_class_classifier(y_ref, w, x_i, word_error):
-    y_pred_idx = mcc_predictor(w, x_i)
-    y_pred = alphabet[y_pred_idx]
-    y_ref_idx = get_keys_from_value(alphabet, y_ref)
-
-    if y_pred == y_ref:
-        # print("Correct prediction:", y_pred)
-        pass
-    else:
-        # print("INCORRECT prediction:", y_pred, "is not", y_ref)
-        if MCC_BIAS:
-            w += phi_b(x_i, y_ref_idx)
-            w -= phi_b(x_i, y_pred_idx)
-        else:
-            w += phi(x_i, y_ref_idx)
-            w -= phi(x_i, y_pred_idx)
-        word_error += 1
-    return w, word_error
-
-
-# prediction of the sequence
-def structured_classifier_pairs(y_ref, w, x_i, word_error):
-    y_pred_idx = mcc_predictor(w, x_i)
-    y_pred = alphabet[y_pred_idx]
-    y_ref_idx = get_keys_from_value(alphabet, y_ref)
-
-    if y_pred == y_ref:
-        # print("Correct prediction:", y_pred)
-        pass
-    else:
-        # print("INCORRECT prediction:", y_pred, "is not", y_ref)
-        if MCC_BIAS:
-            w += phi_b(x_i, y_ref_idx)
-            w -= phi_b(x_i, y_pred_idx)
-        else:
-            w += phi(x_i, y_ref_idx)
-            w -= phi(x_i, y_pred_idx)
-        word_error += 1
-    return w, word_error
-
-
-# prediction of the sequence
-def structured_classifier_fixed(y_ref, w, x_i, word_error):
-    y_pred_idx = mcc_predictor(w, x_i)
-    y_pred = alphabet[y_pred_idx]
-    y_ref_idx = get_keys_from_value(alphabet, y_ref)
-
-    if y_pred == y_ref:
-        # print("Correct prediction:", y_pred)
-        pass
-    else:
-        # print("INCORRECT prediction:", y_pred, "is not", y_ref)
-        if MCC_BIAS:
-            w += phi_b(x_i, y_ref_idx)
-            w -= phi_b(x_i, y_pred_idx)
-        else:
-            w += phi(x_i, y_ref_idx)
-            w -= phi(x_i, y_pred_idx)
-        word_error += 1
     return w, word_error
 
 
 # learn parameters
-def train_weights(train_X, train_Y):
+def train_weights_1(train_X, train_Y):
     train_dataset_len = 1000
 
     # weights = [w_1, w_2 ... w_26]
-    if MCC_BIAS:
-        print("Testing weights with biases")
-        weights = np.zeros((ALPHABET_LEN * (XI_LEN + 1), 1))  # with biases
-    else:
-        print("Testing weights without biases")
-        weights = np.zeros((ALPHABET_LEN * XI_LEN, 1))
+    weights = np.zeros((ALPHABET_LEN * (XI_LEN + 1), 1)) if BIAS else \
+                np.zeros((ALPHABET_LEN * XI_LEN, 1))
 
     n_correct_words = 0
     n_iterations = 0
@@ -266,11 +161,7 @@ def train_weights(train_X, train_Y):
         for i in range(train_dataset_len):
             X = train_X[i]
             Y = train_Y[i]
-            word_error = 0
-            for j in range(len(Y)):
-                y_ref = Y[j]
-                x_i = np.vstack(X[:, j])
-                weights, word_error = multi_class_classifier(y_ref, weights, x_i, word_error)
+            weights, word_error = multi_class_classifier(Y, weights, X, True)
             if word_error == 0:
                 n_correct_words += 1
         print("Success rate of %d: %d" % (n_iterations, n_correct_words))
@@ -280,41 +171,260 @@ def train_weights(train_X, train_Y):
     return weights
 
 
-def evaluate_model(test_X, test_Y, weights):
-    test_dataset_len = 500
-    letter_scores = np.zeros(ALPHABET_LEN)
-    letter_occurences = np.zeros(ALPHABET_LEN)
-    n_correct_words = 0
-    for i in range(test_dataset_len):
+def evaluate_model_1(test_X, test_Y, weights):
+    n_words = 500
+    n_wrong_words = 0
+    n_letters = 0
+    n_wrong_letters = 0
+
+    for i in range(n_words):
         X = test_X[i]
         Y = test_Y[i]
-        word_error = 0
-        for i in range(len(Y)):
-            y_ref = Y[i]
-            y_ref_idx = get_keys_from_value(alphabet, y_ref)
-            letter_occurences[y_ref_idx] += 1
-            x_i = np.vstack(X[:, i])
-            y_pred_idx = mcc_predictor(weights, x_i)
-            y_pred = alphabet[y_pred_idx]
-            if y_pred == y_ref:
-                letter_scores[y_pred_idx] += 1
-            else:
-                word_error += 1
-        if word_error == 0:
-            n_correct_words += 1
-    print(letter_scores / letter_occurences)
-    print("Letter accuracy is:", sum(letter_scores / letter_occurences) / ALPHABET_LEN)
-    print("Word accuracy is:", n_correct_words / test_dataset_len)
+        weights, word_error = multi_class_classifier(Y, weights, X, False)
+
+        if word_error != 0:
+            n_wrong_words += 1
+        n_letters += len(Y)
+        n_wrong_letters += word_error
+
+    R_char = n_wrong_letters / n_letters
+    R_seq = n_wrong_words / n_words
+
+    print("R_char is:", R_char)
+    print("R_seq is:", R_seq)
     return
 
 
-if __name__ == '__main__':
-    trn_X, trn_Y, trn_img = load_images('ocr_names_images/trn')
-    print("Train data loaded")
-    test_X, test_Y, test_img = load_images('ocr_names_images/tst')
-    print("Test data loaded")
+# weights = train_weights_1(trn_X, trn_Y)
+# evaluate_model_1(test_X, test_Y, weights)
 
-    weights = train_weights(trn_X, trn_Y)
-    evaluate_model(test_X, test_Y, weights)
+# ---------------------------------------------------------------------------------------------------------
 
-    print("Number of non zero elements in weights is", np.count_nonzero(weights), "/", weights.shape[0])
+
+def find_next_y(Q, w, g, F_list, Y_pred, index):
+    q_list = Q[:, index]
+    new_F_list = np.zeros(ALPHABET_LEN)
+    for i in range(ALPHABET_LEN):
+        new_F_list[i] = q_list[i] + max(F_list + g[:, i])
+
+    if index == len(Y_pred)-1:
+        Y_pred[index] = np.argmax(new_F_list)
+    else:
+        Y_pred = find_next_y(Q, w, g, new_F_list, Y_pred, index+1)
+
+    Y_pred[index-1] = np.argmax(F_list + g[:, Y_pred[index]])
+    return Y_pred
+
+
+def structured_classifier_pairs(Y_ref, w, g, X, train=True):
+    index = 0
+
+    Q = np.zeros((ALPHABET_LEN, len(Y_ref)))
+    for j in range(len(Y_ref)):
+        x_i = np.vstack(X[:, j])
+        Q[:, j] = letter_predictor(w, x_i)
+    q_list = Q[:, index]
+
+    Y_pred_idx = np.zeros(len(Y_ref), dtype=int)
+    Y_pred_idx = find_next_y(Q, w, g, q_list, Y_pred_idx, index+1)
+
+    Y_ref_idx = np.zeros(len(Y_ref), dtype=int)
+    for i in range(len(Y_ref)):
+        Y_ref_idx[i] = get_keys_from_value(alphabet, Y_ref[i])
+
+    word_error = 0
+    for j in range(len(Y_ref)):
+        if Y_pred_idx[j] != Y_ref_idx[j]:
+            word_error += 1
+            if train:
+                x_i = np.vstack(X[:, j])
+                w += phi_b(x_i, Y_ref_idx[j]) if BIAS else phi(x_i, Y_ref_idx[j])
+                w -= phi_b(x_i, Y_pred_idx[j]) if BIAS else phi(x_i, Y_pred_idx[j])
+        if train and j > 0:
+            if Y_pred_idx[j] != Y_ref_idx[j] and Y_pred_idx[j-1] == Y_ref_idx[j-1]:
+                g[Y_ref_idx[j-1], Y_pred_idx[j]] -= 1
+                g[Y_ref_idx[j-1], Y_ref_idx[j]] += 1
+            elif Y_pred_idx[j] == Y_ref_idx[j] and Y_pred_idx[j-1] != Y_ref_idx[j-1]:
+                g[Y_pred_idx[j-1], Y_ref_idx[j]] -= 1
+                g[Y_ref_idx[j-1], Y_ref_idx[j]] += 1
+            elif Y_pred_idx[j] != Y_ref_idx[j] and Y_pred_idx[j-1] != Y_ref_idx[j-1]:
+                g[Y_pred_idx[j-1], Y_pred_idx[j]] -= 1
+                g[Y_ref_idx[j-1], Y_ref_idx[j]] += 1
+
+    return w, g, word_error
+
+
+# learn parameters
+def train_weights_2(train_X, train_Y):
+    train_dataset_len = 1000
+
+    # weights = [w_1, w_2 ... w_26]
+    weights = np.zeros((ALPHABET_LEN * (XI_LEN + 1), 1))  # with biases
+
+    # letter transition matrix = [g_1; g_2; ... g_26]
+    # g[i,j] .. value of probable transition from letter i to the following letter j
+    g = np.zeros((ALPHABET_LEN, ALPHABET_LEN))
+
+    n_correct_words = 0
+    n_iterations = 0
+    min_success_rate = 1000
+    while n_correct_words < min_success_rate:
+        n_correct_words = 0
+        for i in range(train_dataset_len):
+            X = train_X[i]
+            Y = train_Y[i]
+            weights, g, word_error = structured_classifier_pairs(Y, weights, g, X, True)
+
+            if word_error == 0:
+                n_correct_words += 1
+        print("Success rate of %d: %d" % (n_iterations, n_correct_words))
+        n_iterations += 1
+
+    print("N of iterations for success rate %d: %d" % (min_success_rate, n_iterations))
+    return weights, g
+
+
+def evaluate_model_2(test_X, test_Y, weights, g):
+    n_words = 500
+    n_wrong_words = 0
+    n_letters = 0
+    n_wrong_letters = 0
+
+    for i in range(n_words):
+        X = test_X[i]
+        Y = test_Y[i]
+        weights, g, word_error = structured_classifier_pairs(Y, weights, g, X, False)
+
+        if word_error != 0:
+            n_wrong_words += 1
+        n_letters += len(Y)
+        n_wrong_letters += word_error
+
+    R_char = n_wrong_letters / n_letters
+    R_seq = n_wrong_words / n_words
+
+    print("R_char is:", R_char)
+    print("R_seq is:", R_seq)
+    return
+
+
+# weights, g = train_weights_2(trn_X, trn_Y)
+# evaluate_model_2(test_X, test_Y, weights, g)
+
+# ---------------------------------------------------------------------------------------------------------
+
+
+# prediction of the sequence
+def structured_classifier_fixed(Y_ref, w, X, train=True):
+    word_error = 0
+    word_len = len(Y_ref)
+    sequences_L = sequences[word_len]
+    V_seq_param = np.zeros(len(sequences_L))
+    Q = np.zeros((ALPHABET_LEN, word_len))
+    for j in range(word_len):
+        x_i = np.vstack(X[:, j])
+        Q[:, j] = letter_predictor(w, x_i)
+
+
+    Y_pred = np.zeros((word_len))
+    max_seq_score = -1000
+    max_seq_idx = 0
+    for j in range(len(sequences_L)):
+        seq = sequences_L[j]
+        score = 0
+        for k in range(word_len):
+            letter_idx = get_keys_from_value(alphabet, seq[k])
+            score += Q[letter_idx, k]  # Q[letter_type, word_position]
+        score += V_seq_param[j]
+        if score > max_seq_score:
+            max_seq_score = score
+            max_seq_idx = j
+    Y_pred = sequences_L[max_seq_idx]
+
+    Y_ref_idx = np.zeros(len(Y_ref), dtype=int)
+    Y_pred_idx = np.zeros(len(Y_ref), dtype=int)
+    for i in range(word_len):
+        Y_ref_idx[i] = get_keys_from_value(alphabet, Y_ref[i])
+        Y_pred_idx[i] = get_keys_from_value(alphabet, Y_pred[i])
+
+    for j in range(word_len):
+        if Y_pred_idx[j] != Y_ref_idx[j]:
+            if train:
+                x_i = np.vstack(X[:, j])
+                w += phi_b(x_i, Y_ref_idx[j]) if BIAS else phi(x_i, Y_ref_idx[j])
+                w -= phi_b(x_i, Y_pred_idx[j]) if BIAS else phi(x_i, Y_pred_idx[j])
+            word_error += 1
+
+    if train and word_error > 0:
+        v_ref_idx = 0  # correct sequence (from training data) index in sequences_L list
+        for j in range(len(sequences_L)):
+            seq = sequences_L[j]
+            for k in range(word_len):
+                letter = seq[k]
+                if Y_pred[k] != letter:
+                    break
+                v_ref_idx = j
+        V_seq_param[v_ref_idx] += 1
+        V_seq_param[max_seq_idx] -= 1
+
+    return w, word_error
+
+
+# learn parameters
+def train_weights_3(train_X, train_Y):
+    train_dataset_len = 1000
+
+    # weights = [w_1, w_2 ... w_26]
+    weights = np.zeros((ALPHABET_LEN * (XI_LEN + 1), 1))  # with biases
+
+    # letter transition matrix = [g_1; g_2; ... g_26]
+    # g[i,j] .. value of probable transition from letter i to the following letter j
+    g = np.zeros((ALPHABET_LEN, ALPHABET_LEN))
+
+    n_correct_words = 0
+    n_iterations = 0
+    min_success_rate = 1000
+    while n_correct_words < min_success_rate:
+        n_correct_words = 0
+        for i in range(train_dataset_len):
+            X = train_X[i]
+            Y = train_Y[i]
+            weights, word_error = structured_classifier_fixed(Y, weights, X, True)
+
+            if word_error == 0:
+                n_correct_words += 1
+        print("Success rate of %d: %d" % (n_iterations, n_correct_words))
+        n_iterations += 1
+
+    print("N of iterations for success rate %d: %d" % (min_success_rate, n_iterations))
+    return weights
+
+
+def evaluate_model_3(test_X, test_Y, weights):
+    n_words = 500
+    n_wrong_words = 0
+    n_letters = 0
+    n_wrong_letters = 0
+
+    for i in range(n_words):
+        X = test_X[i]
+        Y = test_Y[i]
+        weights, word_error = structured_classifier_fixed(Y, weights, X, False)
+
+        if word_error != 0:
+            n_wrong_words += 1
+        n_letters += len(Y)
+        n_wrong_letters += word_error
+
+    R_char = n_wrong_letters / n_letters
+    R_seq = n_wrong_words / n_words
+
+    print("R_char is:", R_char)
+    print("R_seq is:", R_seq)
+    return
+
+
+weights = train_weights_3(trn_X, trn_Y)
+evaluate_model_3(test_X, test_Y, weights)
+
+# ---------------------------------------------------------------------------------------------------------
