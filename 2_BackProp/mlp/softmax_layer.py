@@ -1,3 +1,5 @@
+import numpy as np
+
 class SoftmaxLayer(object):
     def __init__(self, name):
         super(SoftmaxLayer, self).__init__()
@@ -7,7 +9,12 @@ class SoftmaxLayer(object):
         return False
 
     def forward(self, X):
-        pass  # TODO IMPLEMENT
+        norm = 0
+        for i in range(len(X)):
+            norm += np.exp(X[i])
+        for i in range(len(X)):
+            X[i] = np.exp(X[i])/norm
+        return X
 
     def delta(self, Y, delta_next):
-        pass  # TODO IMPLEMENT
+        return delta_next*()
