@@ -1,3 +1,5 @@
+import numpy as np
+
 class LossCrossEntropy(object):
     def __init__(self, name):
         super(LossCrossEntropy, self).__init__()
@@ -11,7 +13,8 @@ class LossCrossEntropy(object):
         :param T: one-hot encoded targets, shape (n_samples, n_inputs)
         :return: layer output, shape (n_samples, 1)
         """
-        pass  # TODO IMPLEMENT
+        n_inputs = X.shape[1]
+        return -np.sum(T * np.log(X), axis=1)/n_inputs
 
     def delta(self, X, T):
         """
@@ -21,7 +24,7 @@ class LossCrossEntropy(object):
         :param T: one-hot encoded targets, shape (n_samples, n_inputs)
         :return: delta vector from the loss layer, shape (n_samples, n_inputs)
         """
-        pass  # TODO IMPLEMENT
+        return -T/X
 
 
 class LossCrossEntropyForSoftmaxLogits(object):
@@ -30,7 +33,8 @@ class LossCrossEntropyForSoftmaxLogits(object):
         self.name = name
 
     def forward(self, X, T):
-        pass  # TODO IMPLEMENT
+        n_inputs = X.shape[1]
+        return -np.sum(np.dot(T, np.log(X)), axis=1)/n_inputs
 
     def delta(self, X, T):
-        pass  # TODO IMPLEMENT
+        return -X/T

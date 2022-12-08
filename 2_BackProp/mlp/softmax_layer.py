@@ -1,3 +1,5 @@
+import numpy as np
+
 class SoftmaxLayer(object):
     def __init__(self, name):
         super(SoftmaxLayer, self).__init__()
@@ -12,6 +14,6 @@ class SoftmaxLayer(object):
         return X
 
     def delta(self, Y, delta_next):
-        norm = np.sum(np.exp(X))
-        Y = (Y*norm - Y)/(norm**2)
-        return delta_next.T@Y
+        norm = np.sum(np.exp(Y))
+        Y_d = Y*(norm - 1)/(norm**2)
+        return delta_next@Y_d.T

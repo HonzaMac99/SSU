@@ -1,3 +1,5 @@
+import numpy as np
+
 class LinearLayer(object):
     def __init__(self, n_inputs, n_units, rng, name):
         """
@@ -23,7 +25,7 @@ class LinearLayer(object):
         :param X: layer inputs, shape (n_samples, n_inputs)
         :return: layer output, shape (n_samples, n_units)
         """
-        pass #TODO IMPLEMENT
+        return X@self.W + self.b
 
     def delta(self, Y, delta_next):
         """
@@ -33,7 +35,7 @@ class LinearLayer(object):
         :param delta_next: delta vector backpropagated from the following layer, shape (n_samples, n_units)
         :return: delta vector from this layer, shape (n_samples, n_inputs)
         """
-        pass  # TODO IMPLEMENT
+        return delta_next@self.W.T
 
     def grad(self, X, delta_next):
         """
@@ -43,7 +45,11 @@ class LinearLayer(object):
         :return: a list of two arrays [dW, db] corresponding to gradients of loss w.r.t. weights and biases, the shapes
         of dW and db are the same as the shapes of the actual parameters (self.W, self.b)
         """
-        pass  # TODO IMPLEMENT
+        n_samples = X.shape[0]
+        dW = (X.T@delta_next)/n_samples
+        # db = (np.ones((n_samples, 1))@delta_next)/n_samples
+        db = np.mean(delta_next, axis=0)
+        return [dW, db]
 
     def initialize(self):
         """
