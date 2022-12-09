@@ -54,23 +54,21 @@ class MLP(object):
         :param T: target labels, shape (n_samples, n_outputs)
         :return: a dict of records in which key is the layer.name and value the output of grad function
         """
-        layer_grads = dict()
-        layer_inputs = list()
-
+        layer_gradients = dict()
+        layers = list()
         for layer in self.layers:
-            layer_inputs.append(X)
+            layers.append(X)
             X = layer.forward(X)
 
-        # print("Output")
-        # print(X)
-        # print("")
-
-        d_next = self.loss.delta(X, T)
+        delta_next = self.loss.delta(X,T)
         for layer in reversed(self.layers):
             Y = X
-            X = layer_inputs.pop()
+            X = layers.pop()
             if layer.has_params():
-                layer_grads[layer.name] = layer.grad(X, d_next)
-            d_next = layer.delta(Y, d_next)
+                layer_gradients[layer.name] = layer.grad(X, delta_next)
 
-        return layer_grads
+            delta_next = layer.delta(Y, delta_next)
+
+        return layer_gradients
+
+

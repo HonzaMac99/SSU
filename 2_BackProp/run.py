@@ -46,9 +46,10 @@ def experiment_XOR():
                      n_epochs=100, verbose=False)
     plot_convergence(run_info)
     plt.show()
-    print(net.propagate(X))
+    # plt.savefig('xor_convergence.pdf')
     plot_2D_classification(X, T, net)
     plt.show()
+    # plt.savefig('xor_classification.pdf')
 
 
 def experiment_spirals():
@@ -73,8 +74,8 @@ def experiment_spirals():
                   loss=LossCrossEntropy(name='CE'),
                   )
 
-        run_info = train(net, X_train, T_train, batch_size=len(X_train), alpha=alpha, X_test=X_test, T_test=T_test,
-                         n_epochs=1000, verbose=True)
+        run_info = train(net, X_train, T_train, batch_size=len(X_train), alpha=alpha,
+                         X_test=X_test, T_test=T_test, n_epochs=1000, verbose=True)
         run_info_dict[name] = run_info
         # plot_spirals(X_train, T_train, net)
         # plt.show()
@@ -82,7 +83,7 @@ def experiment_spirals():
         # plt.show()
     plot_test_accuracy_comparison(run_info_dict)
     plt.show()
-    # plt.savefig('spiral.pdf') # you can instead save figure to file
+    # plt.savefig('spiral_convergence.pdf') # you can instead save figure to file
 
 
 def experiment_MNIST_unstable():
@@ -115,6 +116,8 @@ def experiment_MNIST_unstable():
 
     run_info = train(net, X_train, T_train, batch_size=3000, alpha=1e-1,
                      X_test=X_test, T_test=T_test, n_epochs=10, verbose=True)
+    # plot_convergence(run_info)
+    # plt.show()
 
 
 def experiment_MNIST():
@@ -145,8 +148,8 @@ def experiment_MNIST():
               output_layers=[SoftmaxLayer(name='Softmax_OUT')]
               )
 
-    run_info = train(net, X_train, T_train, batch_size=3000, alpha=1e-1, X_test=X_test, T_test=T_test, n_epochs=100,
-                     verbose=True)
+    run_info = train(net, X_train, T_train, batch_size=3000, alpha=1e-1,
+                     X_test=X_test, T_test=T_test, n_epochs=100, verbose=True)
     # plot_convergence(run_info)
     # plt.show()
 
@@ -155,9 +158,9 @@ def experiment_MNIST():
 
 
 if __name__ == '__main__':
-    experiment_XOR()
+    # experiment_XOR()
 
-    # experiment_spirals()
+    experiment_spirals()
 
     # experiment_MNIST_unstable()
 

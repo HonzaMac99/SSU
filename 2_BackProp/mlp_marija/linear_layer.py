@@ -1,5 +1,4 @@
 import numpy as np
-from numpy import linalg as la
 
 class LinearLayer(object):
     def __init__(self, n_inputs, n_units, rng, name):
@@ -23,12 +22,13 @@ class LinearLayer(object):
     def forward(self, X):
         """
         Forward message.
-        :param X: layer inputs, shape (n_samples, n_inputs)
-        :return: layer output, shape (n_samples, n_units)
+        :param X: layer inputs, shape (n_samples, n_inputs) (batch, input_units)
+        :return: layer output, shape (n_samples, n_units)  (batch, output_units)
         """
-        return X@self.W + self.b
+        #print('linear layer forward pass',X @ self.W + self.b)
+        return  X @ self.W + self.b
 
-    def delta(self, Y, delta_next):
+    def delta(self,Y, delta_next):
         """
         Computes delta (dl/d(layer inputs)), based on delta from the following layer. The computations involve backward
         message.
@@ -36,7 +36,7 @@ class LinearLayer(object):
         :param delta_next: delta vector backpropagated from the following layer, shape (n_samples, n_units)
         :return: delta vector from this layer, shape (n_samples, n_inputs)
         """
-        return delta_next@self.W.T
+        return delta_next @ self.W.T
 
     def grad(self, X, delta_next):
         """
@@ -46,20 +46,10 @@ class LinearLayer(object):
         :return: a list of two arrays [dW, db] corresponding to gradients of loss w.r.t. weights and biases, the shapes
         of dW and db are the same as the shapes of the actual parameters (self.W, self.b)
         """
-        n_samples = X.shape[0]
-        dW = (X.T@delta_next)/n_samples
-        db = np.mean(delta_next, axis=0)
-        # db = (np.ones((n_samples, 1))@delta_next)/n_samples
-
-        # gradient clipping to prevent overflows
-        # if la.norm(dW) > 1e4:
-        #     print("big norm")
-        #     dW /= la.norm(dW)
-        # if la.norm(db) > 1e4:
-        #     print("big norm")
-        #     db /= la.norm(db)
-
-        return [dW, db]
+        n_samples, n_units = X.shape[0] , X.shape[1]
+        db = (np.ones(n_samples) @ delta_next) / n_samples
+        dW = (X.T @ delta_next) / n_samples
+        return [dW,db]
 
     def initialize(self):
         """
@@ -82,5 +72,3 @@ class LinearLayer(object):
         assert db.shape == self.b.shape, db.shape
         self.W += dW
         self.b += db
-
-
